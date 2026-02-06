@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List Tabelado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .actions button {
+            padding: 6px 12px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .get { background-color: #2196F3; color: white; }
+        .put { background-color: #FF9800; color: white; }
+        .delete { background-color: #f44336; color: white; }
+        .get:hover { background-color: #0b7dda; }
+        .put:hover { background-color: #e68900; }
+        .delete:hover { background-color: #da190b; }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Tarefas</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Img</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>GET</th>
+                <th>PUT</th>
+                <th>DELETE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><img src="https://via.placeholder.com/50x50/4CAF50/FFFFFF?text=1" alt="Ícone 1"></td>
+                <td>Tarefa 1</td>
+                <td>Descrição da primeira tarefa exemplo.</td>
+                <td class="actions"><button class="get">GET</button></td>
+                <td class="actions"><button class="put">PUT</button></td>
+                <td class="actions"><button class="delete">DELETE</button></td>
+            </tr>
+            <tr>
+                <td><img src="https://via.placeholder.com/50x50/2196F3/FFFFFF?text=2" alt="Ícone 2"></td>
+                <td>Tarefa 2</td>
+                <td>Segunda tarefa com mais detalhes aqui.</td>
+                <td class="actions"><button class="get">GET</button></td>
+                <td class="actions"><button class="put">PUT</button></td>
+                <td class="actions"><button class="delete">DELETE</button></td>
+            </tr>
+            <tr>
+                <td><img src="https://via.placeholder.com/50x50/FF9800/FFFFFF?text=3" alt="Ícone 3"></td>
+                <td>Tarefa 3</td>
+                <td>Terceira tarefa de exemplo simples.</td>
+                <td class="actions"><button class="get">GET</button></td>
+                <td class="actions"><button class="put">PUT</button></td>
+                <td class="actions"><button class="delete">DELETE</button></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+

@@ -1,0 +1,100 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Todo List - Estilo 2000</title>
+    <style type="text/css">
+        body {
+            background-color: #00AAFF;
+            color: #000000;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #FFFFFF;
+            text-align: center;
+            text-shadow: 2px 2px 2px #000000;
+            background-color: #3366CC;
+            padding: 10px;
+            margin: 0 0 20px 0;
+        }
+        table {
+            width: 100%;
+            border: 3px outset #CCCCCC;
+            border-collapse: collapse;
+            background-color: #FFFFFF;
+        }
+        th {
+            background-color: #3366CC;
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 10px 8px;
+            border: 1px inset #CCCCCC;
+        }
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #CCCCCC;
+        }
+        img {
+            width: 48px;
+            height: 48px;
+            border: 2px inset #CCCCCC;
+        }
+        .actions input {
+            font-size: 11px;
+            font-weight: bold;
+            border: 2px outset #CCCCCC;
+            padding: 3px 6px;
+            cursor: hand;
+            margin-right: 3px;
+        }
+        .get { background-color: #66CCFF; color: #000000; }
+        .put { background-color: #FFCC00; color: #000000; }
+        .delete { background-color: #FF6666; color: #FFFFFF; }
+        tr:hover {
+            background-color: #FFFFCC;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Tarefas</h1>
+    <table>
+        <tr>
+            <th>Img</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>GET</th>
+            <th>PUT</th>
+            <th>DELETE</th>
+        </tr>
+        <tr>
+            <td><img src="https://via.placeholder.com/48x48/3366CC/FFFFFF?text=1" alt="Ícone 1"></td>
+            <td>Tarefa 1</td>
+            <td>Descrição da primeira tarefa exemplo.</td>
+            <td class="actions"><input type="button" class="get" value="GET"></td>
+            <td class="actions"><input type="button" class="put" value="PUT"></td>
+            <td class="actions"><input type="button" class="delete" value="DELETE"></td>
+        </tr>
+        <tr>
+            <td><img src="https://via.placeholder.com/48x48/66CCFF/000000?text=2" alt="Ícone 2"></td>
+            <td>Tarefa 2</td>
+            <td>Segunda tarefa com mais detalhes aqui.</td>
+            <td class="actions"><input type="button" class="get" value="GET"></td>
+            <td class="actions"><input type="button" class="put" value="PUT"></td>
+            <td class="actions"><input type="button" class="delete" value="DELETE"></td>
+        </tr>
+        <tr>
+            <td><img src="https://via.placeholder.com/48x48/FFCC00/000000?text=3" alt="Ícone 3"></td>
+            <td>Tarefa 3</td>
+            <td>Terceira tarefa de exemplo simples.</td>
+            <td class="actions"><input type="button" class="get" value="GET"></td>
+            <td class="actions"><input type="button" class="put" value="PUT"></td>
+            <td class="actions"><input type="button" class="delete" value="DELETE"></td>
+        </tr>
+    </table>
+</body>
+</html>
