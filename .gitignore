@@ -1,2 +1,3 @@
 microhttps
-src/*.o
+build/
+shared/

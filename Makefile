@@ -1,6 +1,12 @@
-CC = gcc
+CC := gcc
 
-CFLAGS = \
+TARGET := microhttps
+
+SRC_DIR := src
+INC_DIR := include
+BUILD_DIR := build
+
+CFLAGS := \
 	-std=c17 \
 	-Wall \
 	-Wextra \
@@ -10,29 +16,28 @@ CFLAGS = \
 	-Wstrict-prototypes \
 	-Wmissing-prototypes \
 	-g \
-	-Iinclude
+	-I$(INC_DIR)
 
-TARGET = microhttps
+SRC := $(wildcard $(SRC_DIR)/*.c)
 
-SRC = \
-	src/main.c \
-	src/server.c \
-	src/request.c \
-	src/response.c \
-	src/io.c
+OBJ := $(patsubst \
+	$(SRC_DIR)/%.c, \
+	$(BUILD_DIR)/%.o, \
+	$(SRC))
 
-OBJ = $(SRC:.c=.o)
+.PHONY: all clean run
 
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CC) $(OBJ) -o $(TARGET)
+	$(CC) $(OBJ) -o $@
 
-%.o: %.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-clean:
-	rm -f $(OBJ) $(TARGET)
-
-run: all
+run: $(TARGET)
 	./$(TARGET)
+
+clean:
+	rm -rf $(BUILD_DIR) $(TARGET)
