@@ -8,16 +8,30 @@ CFLAGS = \
 	-Wconversion \
 	-Wshadow \
 	-Wstrict-prototypes \
-	-g
+	-Wmissing-prototypes \
+	-g \
+	-Iinclude
 
 TARGET = microhttps
-SRC = src/main.c
 
-all:
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
+SRC = \
+	src/main.c \
+	src/server.c \
+	src/request.c \
+	src/io.c
+
+OBJ = $(SRC:.c=.o)
+
+all: $(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CC) $(OBJ) -o $(TARGET)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(OBJ) $(TARGET)
 
 run: all
 	./$(TARGET)

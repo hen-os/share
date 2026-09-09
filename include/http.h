@@ -1,0 +1,15 @@
+#ifndef MICROHTTPS_HTTP_H
+#define MICROHTTPS_HTTP_H
+
+typedef enum {
+    HTTP_METHOD_UNKNOWN = 0,
+    HTTP_METHOD_GET,
+    HTTP_METHOD_POST,
+    HTTP_METHOD_PUT,
+    HTTP_METHOD_PATCH,
+    HTTP_METHOD_DELETE,
+    HTTP_METHOD_HEAD,
+    HTTP_METHOD_OPTIONS
+} http_method_t;
+
+#endif
