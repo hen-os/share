@@ -18,6 +18,7 @@ SRC = \
 	src/main.c \
 	src/server.c \
 	src/request.c \
+	src/response.c \
 	src/io.c
 
 OBJ = $(SRC:.c=.o)

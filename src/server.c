@@ -2,6 +2,7 @@
 
 #include "io.h"
 #include "request.h"
+#include "response.h"
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
@@ -103,14 +104,6 @@ int http_server_run(
 {
     char buffer[BUFFER_SIZE];
 
-    const char *response =
-        "HTTP/1.1 200 OK\r\n"
-        "Content-Type: text/plain\r\n"
-        "Content-Length: 13\r\n"
-        "Connection: close\r\n"
-        "\r\n"
-        "Hello, world!";
-
     printf(
         "microhttps listening on 0.0.0.0:%u\n",
         (unsigned int)server->port
@@ -166,6 +159,36 @@ int http_server_run(
             continue;
         }
 
+        http_response_t response;
+
+        http_response_init(&response);
+
+        const char *body = "Hello, world!";
+
+        http_response_set_status(
+            &response,
+            200,
+            "OK"
+        );
+
+        http_response_set_content_type(
+            &response,
+            "text/plain"
+        );
+
+        http_response_set_body(
+            &response,
+            body,
+            strlen(body)
+        );
+
+        if (http_response_send(
+                client_fd,
+                &response
+            ) == -1) {
+            perror("http_response_send");
+        }
+
         printf(
             "\n--- request ---\n"
             "method:  %s\n"
@@ -176,14 +199,6 @@ int http_server_run(
             request.path,
             request.version
         );
-
-        if (send_all(
-                client_fd,
-                response,
-                strlen(response)
-            ) == -1) {
-            perror("send_all");
-        }
 
         close(client_fd);
     }

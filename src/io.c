@@ -6,16 +6,18 @@
 
 int send_all(
     int fd,
-    const char *buffer,
+    const void *buffer,
     size_t length
 )
 {
     size_t total_sent = 0;
 
+    const unsigned char *bytes = buffer;
+
     while (total_sent < length) {
         ssize_t bytes_sent = send(
             fd,
-            buffer + total_sent,
+            bytes + total_sent,
             length - total_sent,
             0
         );
