@@ -4,6 +4,7 @@
 #include "http.h"
 #include "request.h"
 #include "response.h"
+#include "body.h"
 
 #include <stddef.h>
 
@@ -12,6 +13,7 @@
 
 typedef int (*http_handler_t)(
     const http_request_t *request,
+    http_body_stream_t *body,
     http_response_t *response
 );
 
@@ -43,6 +45,7 @@ int http_router_add(
 int http_router_dispatch(
     const http_router_t *router,
     http_request_t *request,
+    http_body_stream_t *body,
     http_response_t *response
 );
 

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MicroShare</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 16px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        section {
+            margin-top: 32px;
+        }
+
+        button {
+            padding: 8px 14px;
+            cursor: pointer;
+        }
+
+        input[type="file"] {
+            margin-bottom: 12px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .status {
+            margin-top: 12px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>MicroShare</h1>
+
+    <p>
+        Compartilhamento de arquivos na rede local.
+    </p>
+
+    <section>
+        <h2>Enviar arquivo</h2>
+
+        <input
+            id="fileInput"
+            type="file"
+        >
+
+        <br>
+
+        <button id="uploadButton">
+            Enviar
+        </button>
+
+        <div
+            id="uploadStatus"
+            class="status"
+        ></div>
+    </section>
+
+    <section>
+        <h2>Arquivos disponíveis</h2>
+
+        <button id="refreshButton">
+            Atualizar lista
+        </button>
+
+        <ul id="fileList"></ul>
+    </section>
+
+    <script>
+        const SERVER =
+            "http://192.168.0.20:8080";
+
+        const fileInput =
+            document.getElementById("fileInput");
+
+        const uploadButton =
+            document.getElementById("uploadButton");
+
+        const uploadStatus =
+            document.getElementById("uploadStatus");
+
+        const refreshButton =
+            document.getElementById("refreshButton");
+
+        const fileList =
+            document.getElementById("fileList");
+
+
+        async function loadFiles() {
+            fileList.innerHTML =
+                "<li>Carregando...</li>";
+
+            try {
+                const response =
+                    await fetch(
+                        `${SERVER}/files`
+                    );
+
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP ${response.status}`
+                    );
+                }
+
+                const data =
+                    await response.json();
+
+                fileList.innerHTML = "";
+
+                for (const file of data.files) {
+                    const item =
+                        document.createElement("li");
+
+                    const link =
+                        document.createElement("a");
+
+                    link.textContent =
+                        `${file.name} (${file.size} bytes)`;
+
+                    link.href =
+                        `${SERVER}/files/${encodeURIComponent(file.name)}`;
+
+                    /*
+                     * O browser tentará abrir alguns tipos
+                     * de arquivo diretamente.
+                     *
+                     * Por enquanto isso é suficiente para
+                     * testar download.
+                     */
+                    link.target = "_blank";
+
+                    item.appendChild(link);
+                    fileList.appendChild(item);
+                }
+
+                if (data.files.length === 0) {
+                    fileList.innerHTML =
+                        "<li>Nenhum arquivo</li>";
+                }
+            } catch (error) {
+                fileList.innerHTML =
+                    `<li>Erro: ${error.message}</li>`;
+            }
+        }
+
+
+        async function uploadFile() {
+            const file =
+                fileInput.files[0];
+
+            if (!file) {
+                uploadStatus.textContent =
+                    "Selecione um arquivo.";
+
+                return;
+            }
+
+            uploadStatus.textContent =
+                `Enviando ${file.name}...`;
+
+            try {
+                const response =
+                    await fetch(
+                        `${SERVER}/files/${encodeURIComponent(file.name)}`,
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/octet-stream"
+                            },
+
+                            body: file
+                        }
+                    );
+
+                const text =
+                    await response.text();
+
+                if (!response.ok) {
+                    throw new Error(
+                        `${response.status}: ${text}`
+                    );
+                }
+
+                uploadStatus.textContent =
+                    `Upload concluído: ${file.name}`;
+
+                fileInput.value = "";
+
+                await loadFiles();
+            } catch (error) {
+                uploadStatus.textContent =
+                    `Erro: ${error.message}`;
+            }
+        }
+
+
+        uploadButton.addEventListener(
+            "click",
+            uploadFile
+        );
+
+        refreshButton.addEventListener(
+            "click",
+            loadFiles
+        );
+
+        loadFiles();
+    </script>
+</body>
+</html>

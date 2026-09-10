@@ -4,7 +4,8 @@
 #include <stddef.h>
 #include <sys/types.h>
 
-#define FILE_STORE_NAME_MAX_LENGTH 256
+#define FILE_STORE_NAME_MAX_LENGTH 4096
+#define FILE_STORE_PATH_MAX_LENGTH 4096
 
 typedef enum {
     FILE_ENTRY_UNKNOWN = 0,
@@ -33,6 +34,23 @@ int file_store_open(
 
 int file_store_filename_valid(
     const char *filename
+);
+
+int file_store_create_temp(
+    const char *directory,
+    const char *filename,
+    char *temp_path,
+    size_t temp_path_capacity
+);
+
+int file_store_commit(
+    const char *temp_path,
+    const char *directory,
+    const char *filename
+);
+
+int file_store_remove(
+    const char *path
 );
 
 #endif

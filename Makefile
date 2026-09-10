@@ -8,6 +8,7 @@ BUILD_DIR := build
 
 CFLAGS := \
 	-std=c17 \
+	-D_POSIX_C_SOURCE=200809L \
 	-Wall \
 	-Wextra \
 	-Wpedantic \

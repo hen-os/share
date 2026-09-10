@@ -1,6 +1,7 @@
 #include "io.h"
 
 #include <errno.h>
+#include <unistd.h>
 #include <string.h>
 #include <sys/socket.h>
 
@@ -35,6 +36,41 @@ int send_all(
         }
 
         total_sent += (size_t)bytes_sent;
+    }
+
+    return 0;
+}
+
+int write_all(
+    int fd,
+    const void *buffer,
+    size_t length
+)
+{
+    const unsigned char *bytes = buffer;
+
+    size_t total_written = 0;
+
+    while (total_written < length) {
+        ssize_t written = write(
+            fd,
+            bytes + total_written,
+            length - total_written
+        );
+
+        if (written == -1) {
+            if (errno == EINTR) {
+                continue;
+            }
+
+            return -1;
+        }
+
+        if (written == 0) {
+            return -1;
+        }
+
+        total_written += (size_t)written;
     }
 
     return 0;

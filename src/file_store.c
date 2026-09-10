@@ -1,13 +1,13 @@
 #include "file_store.h"
 
 #include <dirent.h>
+#include <errno.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
-
-#define FILE_STORE_PATH_MAX_LENGTH 4096
 
 int file_store_list(
     const char *directory,
@@ -183,4 +183,77 @@ int file_store_open(
     *file_size = file_stat.st_size;
 
     return fd;
+}
+
+int file_store_create_temp(
+    const char *directory,
+    const char *filename,
+    char *temp_path,
+    size_t temp_path_capacity
+)
+{
+    if (!file_store_filename_valid(filename)) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    int written = snprintf(
+        temp_path,
+        temp_path_capacity,
+        "%s/.upload-XXXXXX",
+        directory
+    );
+
+    if (
+        written < 0 ||
+        (size_t)written >= temp_path_capacity
+    ) {
+        errno = ENAMETOOLONG;
+        return -1;
+    }
+
+    return mkstemp(temp_path);
+}
+
+int file_store_commit(
+    const char *temp_path,
+    const char *directory,
+    const char *filename
+)
+{
+    if (!file_store_filename_valid(filename)) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    char final_path[FILE_STORE_PATH_MAX_LENGTH];
+
+    int written = snprintf(
+        final_path,
+        sizeof(final_path),
+        "%s/%s",
+        directory,
+        filename
+    );
+
+    if (
+        written < 0 ||
+        (size_t)written >= sizeof(final_path)
+    ) {
+        errno = ENAMETOOLONG;
+        return -1;
+    }
+
+    if (rename(temp_path, final_path) == -1) {
+        return -1;
+    }
+
+    return 0;
+}
+
+int file_store_remove(
+    const char *path
+)
+{
+    return unlink(path);
 }
